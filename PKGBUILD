@@ -30,7 +30,7 @@ package() {
   cd \
     "$srcdir"
   install \
-    -d755 \
+    -dm755 \
     "${pkgdir}/usr/share/fonts/TTF"
   install \
     -m644 \

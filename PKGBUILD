@@ -87,14 +87,14 @@ source=()
 sha256sums=()
 if [[ "${_evmfs}" == "true" ]]; then
   _uri="${_evmfs_uri}"
-elif [[ "${_evmfs}" == "false" ]]; then
-  _uri="${_http}/download/data/2015/05/12/${_font}/${_font}.zip"
   source+=(
     "${_sig_uri}"
   )
   sha256sums+=(
     "${_sig_sum}"
   )
+elif [[ "${_evmfs}" == "false" ]]; then
+  _uri="${_http}/download/data/2015/05/12/${_font}/${_font}.zip"
 fi
 _src="${_tarname}.zip::${_uri}"
 source+=(

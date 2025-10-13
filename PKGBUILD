@@ -28,33 +28,77 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_pkgname=dec-terminal-modern
-pkgname=ttf-$_pkgname
+_evmfs_available="$( \
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
+_os="$( \
+  uname \
+    -o)"
+_font_family=dec-terminal
+_variant=modern
+_pkg="${_font_family}-${_variant}"
+_font="${_font_family}-${_variant}"
+pkgname="ttf-${_font}"
 pkgver=1.0
 pkgrel=1
 _pkgdesc=(
   "Font based on the one of the"
-  "Digital Electronics Corp's VT220 video terminal."
+  "Digital Electronics Corp's
+  VT220 video terminal."
 )
 pkgdesc="${_pkgdesc[*]}"
-arch=(any)
+arch=(
+  'any'
+)
 url="http://www.vtxemu.com/vtx/fnt/_decterm-demo.html"
 license=(
   'custom'
 )
+_http="https://www.wfonts.com"
 _license=(
-  "https://www.wfonts.com/tos"
+  "${_http}/tos"
 )
+provides=(
+  "ttf-${_font_family}=${pkgver}"
+)
+_sum="ebdcc3edf60748e4cb319dfb59943b4fa9967f7615f9a038fc3c066a3bc30cbc"
+_sig_sum="8b3f187033c0c5e7ade4f5bbc7cf925c572ca59c0e9259006ecfbed01c438323"
+# Dvorak
+_sig_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+# The kid
+_evmfs_ns="0x926acb6aA4790ff678848A9F1C59E578B148C786"
+_chain_id="100"
+_fs="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+_evmfs_dir="evmfs://${_chain_id}/${_fs}/${_evmfs_ns}"
+_evmfs_sig_dir="evmfs://${_chain_id}/${_fs}/${_evmfs_sig_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
+_evmfs_sig_uri="${_evmfs_sig_dir}/${_sig_sum}"
+_tarname="${_font}"
+if [[ "${_evmfs}" == "true" ]]; then
+  _uri="${_evmfs_uri}"
+elif [[ "${_evmfs}" == "false" ]]; then
+  _uri="${_http}/download/data/2015/05/12/${_font}/${_font}.zip"
+fi
+_src="${_tarname}.zip::${_uri}"
 source=(
-  "https://www.wfonts.com/download/data/2015/05/12/${_pkgname}/${_pkgname}.zip"
+  "${_src}"
 )
-md5sums=(
-  '13a70789fe00d6b0b4cfed39309575c4'
+sha256sums=(
+  "${_sum}"
 )
 
 package() {
   cd \
-    "$srcdir"
+    "${srcdir}"
   install \
     -dm755 \
     "${pkgdir}/usr/share/fonts/TTF"
@@ -63,4 +107,3 @@ package() {
     *".ttf" \
     "${pkgdir}/usr/share/fonts/TTF"
 }
-

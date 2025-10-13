@@ -88,7 +88,7 @@ sha256sums=()
 if [[ "${_evmfs}" == "true" ]]; then
   _uri="${_evmfs_uri}"
   source+=(
-    "${_sig_uri}"
+    "${_evmfs_sig_uri}"
   )
   sha256sums+=(
     "${_sig_sum}"

@@ -83,16 +83,24 @@ _evmfs_sig_dir="evmfs://${_chain_id}/${_fs}/${_evmfs_sig_ns}"
 _evmfs_uri="${_evmfs_dir}/${_sum}"
 _evmfs_sig_uri="${_evmfs_sig_dir}/${_sig_sum}"
 _tarname="${_font}"
+source=()
+sha256sums=()
 if [[ "${_evmfs}" == "true" ]]; then
   _uri="${_evmfs_uri}"
 elif [[ "${_evmfs}" == "false" ]]; then
   _uri="${_http}/download/data/2015/05/12/${_font}/${_font}.zip"
+  source+=(
+    "${_sig_uri}"
+  )
+  sha256sums+=(
+    "${_sig_sum}"
+  )
 fi
 _src="${_tarname}.zip::${_uri}"
-source=(
+source+=(
   "${_src}"
 )
-sha256sums=(
+sha256sums+=(
   "${_sum}"
 )
 validpgpkeys=(
